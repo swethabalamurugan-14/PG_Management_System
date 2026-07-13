@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { MdLocationOn, MdPhone, MdEmail, MdSend } from 'react-icons/md';
 import toast from 'react-hot-toast';
 
+const PHONE_1 = '+919876543210';
+const PHONE_2 = '+918025537890';
+const EMAIL_1 = 'info@pgmanager.com';
+const EMAIL_2 = 'bookings@pgmanager.com';
+
 export default function ContactSection() {
     const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        toast.success('Message sent! We\'ll get back to you within 24 hours.');
+        toast.success("Message sent! We'll get back to you within 24 hours.");
         setForm({ name: '', email: '', phone: '', message: '' });
     };
 
@@ -25,20 +30,52 @@ export default function ContactSection() {
                 <div className="contact-grid">
                     <div>
                         <div className="contact-info">
-                            {[
-                                { icon: MdLocationOn, label: 'Visit Us', value: '42, 3rd Cross, Koramangala 5th Block, Bengaluru – 560095, Karnataka' },
-                                { icon: MdPhone, label: 'Call Us', value: '+91 98765 43210  |  +91 80 2553 7890' },
-                                { icon: MdEmail, label: 'Email Us', value: 'info@pgmanager.com  |  bookings@pgmanager.com' },
-                            ].map(item => (
-                                <div key={item.label} className="contact-item">
-                                    <div className="contact-icon"><item.icon size={20} /></div>
-                                    <div>
-                                        <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.25rem' }}>{item.label}</div>
-                                        <p style={{ fontSize: '0.875rem', lineHeight: 1.65 }}>{item.value}</p>
-                                    </div>
+                            {/* Location */}
+                            <div className="contact-item">
+                                <div className="contact-icon"><MdLocationOn size={20} /></div>
+                                <div>
+                                    <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.25rem' }}>Visit Us</div>
+                                    <p style={{ fontSize: '0.875rem', lineHeight: 1.65 }}>
+                                        42, 3rd Cross, Koramangala 5th Block,<br />Bengaluru – 560095, Karnataka
+                                    </p>
                                 </div>
-                            ))}
+                            </div>
+
+                            {/* Phone — clickable */}
+                            <div className="contact-item">
+                                <div className="contact-icon"><MdPhone size={20} /></div>
+                                <div>
+                                    <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.25rem' }}>Call Us</div>
+                                    <p style={{ fontSize: '0.875rem', lineHeight: 1.65 }}>
+                                        <a href={`tel:${PHONE_1}`} style={{ color: 'var(--primary-400)', textDecoration: 'none', fontWeight: 500 }}>
+                                            +91 98765 43210
+                                        </a>
+                                        {' | '}
+                                        <a href={`tel:${PHONE_2}`} style={{ color: 'var(--primary-400)', textDecoration: 'none', fontWeight: 500 }}>
+                                            +91 80 2553 7890
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Email — clickable */}
+                            <div className="contact-item">
+                                <div className="contact-icon"><MdEmail size={20} /></div>
+                                <div>
+                                    <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.25rem' }}>Email Us</div>
+                                    <p style={{ fontSize: '0.875rem', lineHeight: 1.65 }}>
+                                        <a href={`mailto:${EMAIL_1}`} style={{ color: 'var(--primary-400)', textDecoration: 'none', fontWeight: 500 }}>
+                                            {EMAIL_1}
+                                        </a>
+                                        {' | '}
+                                        <a href={`mailto:${EMAIL_2}`} style={{ color: 'var(--primary-400)', textDecoration: 'none', fontWeight: 500 }}>
+                                            {EMAIL_2}
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+
                         <div className="map-embed">
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5992!2d77.6278!3d12.9352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU2JzA2LjciTiA3N8KwMzcnNDAuMSJF!5e0!3m2!1sen!2sin!4v1234567890"

@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { MdArrowForward, MdStar, MdShield, MdWifi } from 'react-icons/md';
+import { MdStar } from 'react-icons/md';
 
 export default function HeroSection() {
     return (
@@ -23,9 +22,6 @@ export default function HeroSection() {
                         Safe, affordable and comfortable accommodation for students and working professionals with modern facilities and secure management.
                     </p>
                     <div className="hero-btns">
-                        <a href="#rooms" className="btn btn-primary btn-lg">
-                            View Rooms <MdArrowForward size={18} />
-                        </a>
                         <a href="#contact" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.3)', backdropFilter: 'blur(10px)' }}>
                             Contact Us
                         </a>
