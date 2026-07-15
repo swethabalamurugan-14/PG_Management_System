@@ -4,7 +4,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { MdDarkMode, MdSunny, MdMenu, MdClose } from 'react-icons/md';
 import { FaBuilding } from 'react-icons/fa';
 
-const links = ['Home', 'About', 'Rooms', 'Facilities', 'Gallery', 'Contact'];
+const links = ['Home', 'About', 'Facilities', 'Rooms', 'Gallery', 'Contact'];
 
 export default function LandingNavbar() {
     const { theme, toggleTheme } = useTheme();

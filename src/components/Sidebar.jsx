@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-    MdDashboard, MdMeetingRoom, MdBed, MdPeople, MdSupervisorAccount,
-    MdBookOnline, MdPayment, MdReport, MdEvent, MdBuild,
-    MdSpeakerNotes, MdAssessment, MdHistory, MdNotifications,
-    MdPerson, MdSettings, MdLogout, MdClose, MdMenu,
-    MdAssignment, MdPersonPin, MdCheckCircle
+    MdDashboard, MdMeetingRoom, MdPeople, MdSupervisorAccount,
+    MdBookOnline, MdPayment, MdReport, MdBuild,
+    MdAssessment, MdNotifications,
+    MdSettings, MdLogout,
+    MdAssignment, MdPersonPin, MdCheckCircle, MdForum, MdSpeakerNotes
 } from 'react-icons/md';
 
 const adminMenu = [
@@ -14,7 +14,6 @@ const adminMenu = [
     { label: 'Dashboard', icon: MdDashboard, path: '/admin/dashboard' },
     { section: 'Management' },
     { label: 'Room Management', icon: MdMeetingRoom, path: '/admin/rooms' },
-    { label: 'Bed Management', icon: MdBed, path: '/admin/beds' },
     { label: 'Tenant Management', icon: MdPeople, path: '/admin/tenants' },
     { label: 'Staff Management', icon: MdSupervisorAccount, path: '/admin/staff' },
     { section: 'Operations' },
@@ -24,13 +23,10 @@ const adminMenu = [
     { label: 'Visitor Management', icon: MdPersonPin, path: '/admin/visitors' },
     { label: 'Maintenance', icon: MdBuild, path: '/admin/maintenance' },
     { section: 'Communication' },
-    { label: 'Notice Board', icon: MdSpeakerNotes, path: '/admin/notices' },
-    { label: 'Notifications', icon: MdNotifications, path: '/admin/notifications' },
-    { section: 'Reports & Logs' },
+    { label: 'Communication', icon: MdForum, path: '/admin/notices' },
+    { section: 'Reports' },
     { label: 'Reports', icon: MdAssessment, path: '/admin/reports' },
-    { label: 'Audit Logs', icon: MdHistory, path: '/admin/audit' },
     { section: 'Account' },
-    { label: 'Profile', icon: MdPerson, path: '/admin/profile' },
     { label: 'Settings', icon: MdSettings, path: '/admin/settings' },
 ];
 
@@ -44,7 +40,7 @@ const staffMenu = [
     { label: 'Maintenance', icon: MdBuild, path: '/staff/maintenance' },
     { section: 'Account' },
     { label: 'Notifications', icon: MdNotifications, path: '/staff/notifications' },
-    { label: 'Profile', icon: MdPerson, path: '/staff/profile' },
+    { label: 'Profile', icon: MdPeople, path: '/staff/profile' },
 ];
 
 const tenantMenu = [
@@ -59,7 +55,7 @@ const tenantMenu = [
     { label: 'Notice Board', icon: MdSpeakerNotes, path: '/tenant/notices' },
     { section: 'Account' },
     { label: 'Notifications', icon: MdNotifications, path: '/tenant/notifications' },
-    { label: 'Profile', icon: MdPerson, path: '/tenant/profile' },
+    { label: 'Profile', icon: MdPeople, path: '/tenant/profile' },
 ];
 
 const menuMap = { admin: adminMenu, staff: staffMenu, tenant: tenantMenu };
@@ -84,9 +80,9 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
             {mobileOpen && <div className="sidebar-backdrop" onClick={() => setMobileOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 199 }} />}
             <nav className={sidebarClass}>
                 {/* Logo */}
-                <div className="sidebar-logo">
+                <div className="sidebar-logo" style={{ justifyContent: collapsed ? 'center' : 'flex-start' }}>
                     <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${color}, #8b5cf6)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: 18, flexShrink: 0 }}>P</div>
-                    {!collapsed && <span className="sidebar-logo-text">PG Manager</span>}
+                    {!collapsed && <span className="sidebar-logo-text" style={{ fontWeight: 800, letterSpacing: '-0.02em' }}>PG Manager</span>}
                 </div>
 
                 {/* Menu Items */}
@@ -94,7 +90,15 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
                     {menu.map((item, i) => {
                         if (item.section) {
                             return !collapsed ? (
-                                <div key={i} className="sidebar-section-label">{item.section}</div>
+                                <div key={i} className="sidebar-section-label" style={{
+                                    fontSize: '0.65rem',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.1em',
+                                    textTransform: 'uppercase',
+                                    color: 'var(--text-muted)',
+                                    padding: '1rem 1rem 0.35rem',
+                                    opacity: 0.7,
+                                }}>{item.section}</div>
                             ) : <div key={i} style={{ height: 8 }} />;
                         }
                         const Icon = item.icon;
@@ -105,6 +109,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
                                 className={({ isActive }) => `sidebar-item${isActive ? ' active' : ''}`}
                                 onClick={() => setMobileOpen && setMobileOpen(false)}
                                 title={collapsed ? item.label : ''}
+                                style={collapsed ? { justifyContent: 'center' } : {}}
                             >
                                 <Icon size={20} style={{ flexShrink: 0 }} />
                                 {!collapsed && <span>{item.label}</span>}
@@ -124,7 +129,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
                             </div>
                         </div>
                     )}
-                    <button className="sidebar-item" onClick={handleLogout} style={{ width: '100%', color: 'var(--danger)' }}>
+                    <button className="sidebar-item" onClick={handleLogout} style={{ width: '100%', color: 'var(--danger)', justifyContent: collapsed ? 'center' : undefined }}>
                         <MdLogout size={20} style={{ flexShrink: 0 }} />
                         {!collapsed && <span>Logout</span>}
                     </button>

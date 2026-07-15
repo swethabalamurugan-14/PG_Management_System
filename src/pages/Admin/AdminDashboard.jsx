@@ -1,34 +1,69 @@
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/DashboardLayout';
-import StatCard from '../../components/StatCard';
 import { mockRooms, mockTenants, mockStaff, mockPayments, mockComplaints, mockVisitors, revenueData, occupancyData, complaintData } from '../../data/mockData';
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { MdMeetingRoom, MdBed, MdPeople, MdSupervisorAccount, MdPayment, MdReport, MdPersonPin, MdCheckCircle, MdWarning, MdTrendingUp } from 'react-icons/md';
+import { MdMeetingRoom, MdBed, MdPeople, MdSupervisorAccount, MdPayment, MdReport, MdArrowForward, MdWarning } from 'react-icons/md';
 
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
 export default function AdminDashboard() {
+    const navigate = useNavigate();
+
     const totalRooms = mockRooms.length;
     const availRooms = mockRooms.filter(r => r.status === 'Available').length;
     const occupiedRooms = mockRooms.filter(r => r.status === 'Occupied').length;
-    const totalBeds = mockRooms.reduce((a, r) => a + r.capacity, 0);
-    const availBeds = mockRooms.reduce((a, r) => a + r.beds.filter(b => b.status === 'Available').length, 0);
     const monthlyIncome = mockPayments.reduce((a, p) => a + p.paid, 0);
     const pending = mockPayments.reduce((a, p) => a + p.pending, 0);
-    const openComplaints = mockComplaints.filter(c => c.status !== 'Resolved').length;
     const todayVisitors = mockVisitors.filter(v => v.status !== 'Rejected').length;
 
-    const stats = [
-        { icon: <MdMeetingRoom size={24} />, label: 'Total Rooms', value: totalRooms, color: '#6366f1' },
-        { icon: <MdCheckCircle size={24} />, label: 'Available Rooms', value: availRooms, color: '#10b981' },
-        { icon: <MdMeetingRoom size={24} />, label: 'Occupied Rooms', value: occupiedRooms, color: '#f59e0b' },
-        { icon: <MdBed size={24} />, label: 'Total Beds', value: totalBeds, color: '#8b5cf6' },
-        { icon: <MdBed size={24} />, label: 'Available Beds', value: availBeds, color: '#06b6d4' },
-        { icon: <MdPeople size={24} />, label: 'Total Tenants', value: mockTenants.length, color: '#ec4899' },
-        { icon: <MdSupervisorAccount size={24} />, label: 'Total Staff', value: mockStaff.length, color: '#14b8a6' },
-        { icon: <MdPayment size={24} />, label: 'Monthly Income', value: `₹${(monthlyIncome / 1000).toFixed(0)}k`, color: '#10b981', trend: 8 },
-        { icon: <MdWarning size={24} />, label: 'Pending Payments', value: `₹${(pending / 1000).toFixed(1)}k`, color: '#ef4444' },
-        { icon: <MdReport size={24} />, label: 'Open Complaints', value: openComplaints, color: '#f59e0b' },
-        { icon: <MdPersonPin size={24} />, label: 'Visitors Today', value: todayVisitors, color: '#6366f1' },
+    const dashCards = [
+        {
+            label: 'Rooms',
+            icon: MdMeetingRoom,
+            color: '#6366f1',
+            gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+            path: '/admin/rooms',
+            stats: [
+                { label: 'Total', value: totalRooms },
+                { label: 'Available', value: availRooms },
+            ],
+            description: 'Room & Bed Management',
+        },
+        {
+            label: 'Staff',
+            icon: MdSupervisorAccount,
+            color: '#10b981',
+            gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
+            path: '/admin/staff',
+            stats: [
+                { label: 'Total Staff', value: mockStaff.length },
+            ],
+            description: 'Staff Management',
+        },
+        {
+            label: 'Payments',
+            icon: MdPayment,
+            color: '#f59e0b',
+            gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+            path: '/admin/payments',
+            stats: [
+                { label: 'Collected', value: `₹${(monthlyIncome / 1000).toFixed(0)}k` },
+                { label: 'Pending', value: `₹${(pending / 1000).toFixed(1)}k` },
+            ],
+            description: 'Payment Management',
+        },
+        {
+            label: 'Tenants',
+            icon: MdPeople,
+            color: '#ec4899',
+            gradient: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
+            path: '/admin/tenants',
+            stats: [
+                { label: 'Total', value: mockTenants.length },
+                { label: 'Visitors Today', value: todayVisitors },
+            ],
+            description: 'Tenant Management',
+        },
     ];
 
     return (
@@ -48,11 +83,50 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* Stat Cards */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
-                    {stats.map(s => (
-                        <StatCard key={s.label} {...s} />
-                    ))}
+                {/* 4 Dashboard Cards */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+                    {dashCards.map(card => {
+                        const Icon = card.icon;
+                        return (
+                            <div
+                                key={card.label}
+                                className="card"
+                                onClick={() => navigate(card.path)}
+                                style={{
+                                    padding: '1.5rem',
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.18s, box-shadow 0.18s',
+                                    borderTop: `3px solid ${card.color}`,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                }}
+                                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 8px 28px ${card.color}25`; }}
+                                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = ''; }}
+                            >
+                                {/* Background accent */}
+                                <div style={{ position: 'absolute', top: -20, right: -20, width: 80, height: 80, borderRadius: '50%', background: `${card.color}10`, pointerEvents: 'none' }} />
+
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                    <div style={{ width: 48, height: 48, borderRadius: 'var(--radius)', background: card.gradient, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Icon size={24} color="#fff" />
+                                    </div>
+                                    <MdArrowForward size={18} color="var(--text-muted)" />
+                                </div>
+
+                                <div style={{ fontWeight: 800, fontSize: '1.15rem', marginBottom: '0.25rem', color: 'var(--text-primary)' }}>{card.label}</div>
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>{card.description}</div>
+
+                                <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
+                                    {card.stats.map(stat => (
+                                        <div key={stat.label}>
+                                            <div style={{ fontSize: '1.4rem', fontWeight: 800, color: card.color, lineHeight: 1 }}>{stat.value}</div>
+                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{stat.label}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Charts Row 1 */}

@@ -17,7 +17,7 @@ export default function ContactSection() {
     };
 
     return (
-        <section className="section" id="contact" style={{ background: 'var(--bg-secondary)' }}>
+        <section className="section" id="contact" style={{ background: 'var(--bg-secondary)', paddingBottom: '3rem' }}>
             <div className="container">
                 <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <div className="section-tag">Contact Us</div>

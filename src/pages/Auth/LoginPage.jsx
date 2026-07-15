@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { MdVisibility, MdVisibilityOff, MdDarkMode, MdSunny } from 'react-icons/md';
+import { MdVisibility, MdVisibilityOff, MdDarkMode, MdSunny, MdArrowBack } from 'react-icons/md';
 import { FaBuilding } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -40,12 +40,24 @@ export default function LoginPage() {
         <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
             {/* Top bar */}
             <div style={{ padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border)' }}>
-                <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 800, fontSize: '1.2rem', color: 'var(--text-primary)' }}>
-                    <div style={{ width: 36, height: 36, background: 'var(--gradient-primary)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <FaBuilding size={16} color="#fff" />
-                    </div>
-                    PG<span style={{ color: 'var(--primary-500)' }}>Manager</span>
-                </a>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 800, fontSize: '1.2rem', color: 'var(--text-primary)', textDecoration: 'none' }}>
+                        <div style={{ width: 36, height: 36, background: 'var(--gradient-primary)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FaBuilding size={16} color="#fff" />
+                        </div>
+                        PG<span style={{ color: 'var(--primary-500)' }}>Manager</span>
+                    </a>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/')}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem', fontWeight: 500, color: 'var(--text-muted)', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '0.35rem 0.75rem', cursor: 'pointer', transition: 'color 0.2s, border-color 0.2s' }}
+                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--primary-500)'; e.currentTarget.style.borderColor = 'var(--primary-500)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+                    >
+                        <MdArrowBack size={15} />
+                        Back to Home
+                    </button>
+                </div>
                 <button className="btn btn-icon btn-ghost" onClick={toggleTheme}>
                     {theme === 'light' ? <MdDarkMode size={20} /> : <MdSunny size={20} />}
                 </button>
