@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
+import BottomNav from './BottomNav';
+import { useAuth } from '../context/AuthContext';
 
 export default function DashboardLayout({ children, title }) {
     const [collapsed, setCollapsed] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const { user } = useAuth();
+
+    // Only show BottomNav for admin role on mobile
+    const isAdmin = user?.role === 'admin';
 
     return (
         <div className="dashboard-layout">
@@ -25,6 +31,8 @@ export default function DashboardLayout({ children, title }) {
                     {children}
                 </div>
             </div>
+            {/* Bottom nav renders only on mobile via CSS (display:none on desktop) */}
+            {isAdmin && <BottomNav />}
         </div>
     );
 }

@@ -1416,56 +1416,207 @@ p {
   }
 }
 
+/* ═══════════════════════════════════════════
+   BOTTOM NAV (admin mobile only)
+═══════════════════════════════════════════ */
+.bottom-nav {
+  display: none; /* hidden on desktop */
+}
+
+/* ─── Topbar helpers ─── */
+.desktop-only-btn {
+  display: inline-flex;
+}
+.mobile-only-btn {
+  display: none;
+}
+.desktop-search {
+  display: flex;
+}
+.mobile-search-bar {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  /* ── Sidebar: completely hidden (replaced by bottom nav) ── */
   .dashboard-main {
     margin-left: 0;
   }
-
   .sidebar {
+    transform: translateX(-100%);
+    /* mobile-open class not needed anymore — bottom nav replaces sidebar */
+  }
+  .sidebar.mobile-open {
     transform: translateX(-100%);
   }
 
-  .sidebar.mobile-open {
-    transform: translateX(0);
+  /* ── Dashboard content: extra bottom padding for bottom nav ── */
+  .dashboard-content {
+    padding: 1rem 1rem 88px; /* 64px nav + 24px breathing room */
   }
 
+  /* ── Other grid resets ── */
   .grid-2,
   .grid-3,
   .grid-4 {
     grid-template-columns: 1fr;
   }
-
   .room-grid {
     grid-template-columns: 1fr;
   }
-
   .footer-grid {
     grid-template-columns: 1fr;
   }
-
   .hero-stats {
     flex-wrap: wrap;
     gap: 1rem;
   }
-
   .nav-links {
     display: none;
   }
-
   .section {
     padding: 3.5rem 0;
   }
-
-  .dashboard-content {
-    padding: 1rem;
-  }
-
   .contact-grid {
     grid-template-columns: 1fr;
   }
 
+  /* ── Topbar mobile tweaks ── */
   .topbar {
     padding: 0 1rem;
+    flex-wrap: wrap;
+    gap: 0;
+    position: relative;
+  }
+
+  /* hide desktop elements on mobile */
+  .desktop-only-btn {
+    display: none !important;
+  }
+  .desktop-search {
+    display: none !important;
+  }
+  /* show mobile elements */
+  .mobile-only-btn {
+    display: inline-flex !important;
+  }
+
+  /* Inline mobile search bar — full width row below topbar */
+  .mobile-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Tables: horizontal scroll so ALL columns are visible ── */
+  .rounded-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .data-table {
+    min-width: 600px; /* ensures all columns reachable by scroll */
+  }
+
+  /* ── Stat/summary cards: 2-column grid on mobile ── */
+  .mobile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Bottom Navigation Bar ── */
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.10);
+    z-index: 298;
+    align-items: stretch;
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: var(--text-muted);
+    font-size: 0.62rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    padding: 0;
+    transition: color var(--transition);
+    border-top: 2px solid transparent;
+  }
+
+  .bottom-nav-item:hover {
+    color: var(--primary-500);
+  }
+
+  .bottom-nav-item.active {
+    color: var(--primary-500);
+    border-top-color: var(--primary-500);
+    background: var(--primary-50);
+  }
+
+  [data-theme="dark"] .bottom-nav-item.active {
+    background: rgba(99,102,241,0.12);
+  }
+
+  .bottom-nav-item svg {
+    flex-shrink: 0;
+  }
+
+  .bottom-nav-item span {
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ── Page header wraps gracefully ── */
+  .page-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  /* ── Filters bar: full width wrapping ── */
+  .search-bar input {
+    min-width: 100px;
+  }
+
+  /* ── Modal full-screen on mobile ── */
+  .modal-box {
+    max-height: 85vh;
+    margin: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    width: 100%;
+    max-width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
   }
 }
 
@@ -1481,6 +1632,22 @@ p {
   .hero-btns .btn {
     width: 100%;
     justify-content: center;
+  }
+
+  /* Even tighter table on very small screens */
+  .data-table th,
+  .data-table td {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  /* Filters stack vertically on very small screens */
+  .search-bar {
+    width: 100%;
+  }
+  .search-bar input {
+    width: 100%;
+    min-width: unset;
   }
 }
 
